@@ -1,90 +1,77 @@
 import React, { Component } from "react";
 import { View, StyleSheet, Text } from "react-native";
+import ThreeFramesBoard from "./ThreeFramesBoard";
+import ScoreBoard from './ScoreBoard';
+import EditScore from './EditScore.js';
 
 export default class Scores extends Component {
   constructor(props) {
     super(props);
+    this.updateScore = this.updateScore.bind(this);
     this.state = {
       currentPlayer : 1,
-      currentFrame : 3,
-      currentBowl : 1,
-      // player : new Array(10).fill(0).map(frame => new Array(2).fill(0))
-      player : [[2,3], [7,3], [10,0]] 
+      currentFrame : 1,
+      currentBowl : 0,
+      // player : [[2,3],[7,3],[10,0],[6,3],[8,2],[10,0],[0,0],[9,0],[0,10],[5,5,10]],
+      // player : [[10,0],[10,0],[10,0],[10,0],[10,0],[10,0],[10,0],[10,0],[10,0],[10,10,10]],
+      player : [[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0,0]],
+      playerInfo : {
+        player1name :'',
+        player2name :'',
+        player3name :'',
+        player4name :'',
+        players: 0
+      }
     };
   }
 
-  miniFrameOne(frame) {
-    if(this.state.player[frame][0] === 10) {
-      return ''
-    } else {
-      return this.state.player[frame][0]
+  componentDidUpdate() {
+    if(this.props.navigation.state.params) {
+      const {data, ts} = this.props.navigation.state.params;
+      if(data && (!this.state.ts || ts !== this.state.ts)) {
+        this.setState({playerInfo: data, ts: ts})
+      }
     }
   }
 
-  miniFrameTwo(frame) {
-    if(this.state.player[frame][0] === 10) {
-      return '';
+  updateScore(pins) {
+    let {currentBowl, currentFrame, player} = this.state
+    let temp = [...player];
+    if(currentBowl === 0) {
+      if(pins === 10) {
+        temp[currentFrame][currentBowl] = pins;
+        this.setState({player : temp, currentFrame: ++currentFrame});
+      } else {
+        temp[currentFrame][currentBowl] = pins;
+        this.setState({player : temp, currentBowl: ++currentBowl});
+      }
     } else {
-      return this.state.player[frame][1];
+      temp[currentFrame][currentBowl] = pins;
+      this.setState({player : temp, currentFrame: ++currentFrame, currentBowl : 0});
     }
-  }
-
-  mainFrame(frame) {
-    if(this.state.player[frame][0] === 10) {
-      return 'X';
-    } else if(this.state.player[frame][0] + this.state.player[frame][1] === 10) {
-      return '/';
-    } else {
-      return this.state.player[frame][0] + this.state.player[frame][1];
-    }  
   }
 
   render() {
-    console.log(this.state.player)
-    const {currentFrame, player, currentPlayer} = this.state;
+    const {currentFrame, player, currentPlayer, playerInfo} = this.state;
     return (
+      <>
+        <ScoreBoard score={player} initials={playerInfo.player1name} />
       <View style={styles.container}>
         <View style={styles.frameNumbersContainer}>
           <View style={styles.frameNumberContainer}>
-            <Text style={styles.textCenter}>{currentFrame - 2}</Text>
+            <Text style={styles.textCenter}>{currentFrame - 2 > 0 ? currentFrame - 2 : 1}</Text>
           </View>
           <View style={styles.frameNumberContainer}>
-            <Text style={styles.textCenter}>{currentFrame - 1}</Text>
+            <Text style={styles.textCenter}>{currentFrame - 1 > 1 ? currentFrame - 1 : 2}</Text>
           </View>
           <View style={styles.frameNumberContainer}>
-            <Text style={styles.textCenter}>{currentFrame}</Text>
+            <Text style={styles.textCenter}>{currentFrame > 2 ? currentFrame : 3}</Text>
           </View>
         </View>
-        <View style={{ flexDirection: "row" }}>
-          <View style={styles.frameContainer}>
-            <View style={styles.miniFrameContainer}>
-              <Text style={styles.miniFrameText}>{this.miniFrameTwo(currentFrame - 3)}</Text>
-            </View>
-            <View style={styles.miniFrameContainer}>
-              <Text style={styles.miniFrameText}>{this.miniFrameOne(currentFrame - 3)}</Text>
-            </View>
-            <Text style={styles.frameText}>{this.mainFrame(currentFrame - 3)}</Text>
-          </View>
-          <View style={styles.frameContainer}>
-            <View style={styles.miniFrameContainer}>
-              <Text style={styles.miniFrameText}>{this.miniFrameTwo(currentFrame - 2)}</Text>
-            </View>
-            <View style={styles.miniFrameContainer}>
-              <Text style={styles.miniFrameText}>{this.miniFrameOne(currentFrame - 2)}</Text>
-            </View>
-            <Text style={styles.frameText}>{this.mainFrame(currentFrame - 2)}</Text>
-          </View>
-          <View style={styles.frameContainer}>
-            <View style={styles.miniFrameContainer}>
-              <Text style={styles.miniFrameText}>{this.miniFrameTwo(currentFrame - 1)}</Text>
-            </View>
-            <View style={styles.miniFrameContainer}>
-              <Text style={styles.miniFrameText}>{this.miniFrameOne(currentFrame - 1)}</Text>
-            </View>
-            <Text style={styles.frameText}>{this.mainFrame(currentFrame - 1)}</Text>
-          </View>
-        </View>
+          <ThreeFramesBoard player={this.state.player} frame={this.state.currentFrame} bowl={this.state.currentBowl} />
       </View>
+        <EditScore updateScore={this.updateScore} frame={this.state.currentFrame} player={this.state.player}/>
+      </>
     );
   }
 }
@@ -111,35 +98,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#eee",
     borderWidth: 0.5,
     borderColor: "black"
-  },
-
-  textCenter: {
-    textAlign: "center"
-  },
-
-  frameContainer: {
-    width: 100,
-    height: 100,
-    backgroundColor: "#eee",
-    flexDirection: "row-reverse",
-    borderWidth: 0.5,
-    borderColor: "black"
-  },
-
-  miniFrameContainer: {
-    width: 25,
-    height: 25,
-    borderWidth: 0.5,
-    borderColor: "black"
-  },
-
-  miniFrameText: {
-    fontSize: 18,
-    textAlign: "center"
-  },
-
-  frameText: {
-    fontSize: 48,
-    paddingTop: 20
   }
 });
