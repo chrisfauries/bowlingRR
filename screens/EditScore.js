@@ -69,7 +69,6 @@ const EditScore = (props) => {
     <>
       <View style={styles.container}>
         <Text style={styles.centerText}>How many pins did you get?</Text>
- 
       <View>
 				{choices()}
 			</View>

@@ -4,7 +4,7 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import Scores from '../screens/Scores';
-import SettingsScreen from '../screens/SettingsScreen';
+import About from '../screens/About';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -50,26 +50,26 @@ ScoresStack.navigationOptions = {
 
 ScoresStack.path = '';
 
-const SettingsStack = createStackNavigator(
+const AboutStack = createStackNavigator(
   {
-    History: SettingsScreen,
+    About: About,
   },
   config
 );
 
-SettingsStack.navigationOptions = {
-  tabBarLabel: 'History',
+AboutStack.navigationOptions = {
+  tabBarLabel: 'About',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-time' : 'md-time'} />
   ),
 };
 
-SettingsStack.path = '';
+AboutStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
   ScoresStack,
-  SettingsStack,
+  AboutStack,
 });
 
 tabNavigator.path = '';
