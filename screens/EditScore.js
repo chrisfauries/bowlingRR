@@ -2,11 +2,13 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 const EditScore = (props) => {
-	const {player, frame} = props;
+	const {player, frame, bowl} = props;
 
 	const choices = function() {
 		let available = 10 - player[frame][0];
-		console.log(player[frame])
+		if(frame === 9 && player[frame][bowl - 1] === 10) {
+			available = 10;
+		}
 			return (
 				<>
 				<View style={styles.rowContainer}>

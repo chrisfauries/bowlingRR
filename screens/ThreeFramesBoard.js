@@ -20,6 +20,10 @@ const ThreeFramesBoard = props => {
     }
   };
 
+  const miniFrameThree = function(frame) {
+
+  }
+
   const mainFrame = function(frame) {
     if (player[frame][0] === 10) {
       return "X";
@@ -31,8 +35,16 @@ const ThreeFramesBoard = props => {
   };
 
   const buildFrame = function(frame) {
+    const thirdFrame = frame === 9 ? (
+      <View style={styles.miniFrameContainer}>
+      <Text style={styles.miniFrameText}>{miniFrameThree(frame)}</Text>
+    </View>
+    ) : (
+      <></>
+    )
     return (
       <View style={styles.frameContainer}>
+        {thirdFrame}
         <View style={styles.miniFrameContainer}>
           <Text style={styles.miniFrameText}>{miniFrameTwo(frame)}</Text>
         </View>
@@ -45,9 +57,9 @@ const ThreeFramesBoard = props => {
   };
   return (
     <View style={{ flexDirection: "row" }}>
-      {frame - 3 > 0 ? buildFrame(frame - 2) : buildFrame(1)}
-      {frame - 2 > 1 ? buildFrame(frame - 1) : buildFrame(2)}
-      {frame - 1 > 2 ? buildFrame(frame) : buildFrame(3)}
+      {frame - 2 > 0 ? buildFrame(frame - 2) : buildFrame(0)}
+      {frame - 1 > 1 ? buildFrame(frame - 1) : buildFrame(1)}
+      {frame > 2 ? buildFrame(frame) : buildFrame(2)}
     </View>
   );
 };
