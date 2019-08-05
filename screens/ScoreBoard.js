@@ -19,7 +19,7 @@ const ScoreBoard = (props) => {
 		if(score[9][0] === 10 && score[9][1] === 10 && score[9][2] === 10) {
 			lastFrame += 'X X X';
 		} else if(score[9][0] === 10 && score[9][1] === 10 && score[9][2] !== 10) {
-			lastFrame += 'X X ' + score[9][2] ? score[9][2] : '-';
+			lastFrame += 'X X | ' + (score[9][2] ? score[9][2] : '-');
 		}else if(score[9][0] === 10 && score[9][1] < 10 && (score[9][1] + score[9][2] === 10)) {
 			lastFrame += 'X /' ;
 		} else if(score[9][0] < 10 && (score[9][0] + score[9][1] === 10)) {

@@ -6,8 +6,14 @@ const EditScore = (props) => {
 
 	const choices = function() {
 		let available = 10 - player[frame][0];
-		if(frame === 9 && player[frame][bowl - 1] === 10) {
-			available = 10;
+		if(frame === 9) {
+			if(player[frame][bowl - 1] === 10) {
+				available = 10;
+			} else if(player[frame][bowl - 1] + player[frame][bowl - 2] === 10) {
+				available = 10;
+			} else if(player[frame][0] === 10 && bowl === 2) {
+				available = 10 - player[frame][1];
+			}
 		}
 			return (
 				<>
@@ -45,6 +51,9 @@ const EditScore = (props) => {
 					</TouchableOpacity>
 				</View>
 				<View style={styles.rowContainer}>
+					<TouchableOpacity style={styles.strike} onPress={props.previous}>
+						<Text style={styles.pinNumber}>Back</Text>
+					</TouchableOpacity>
 					<TouchableOpacity style={styles.strike} onPress={available >= 0 ? () => {props.updateScore(0)} : () => {}}>
 						<Text style={styles.pinNumber}>0</Text>
 					</TouchableOpacity>
@@ -60,9 +69,10 @@ const EditScore = (props) => {
     <>
       <View style={styles.container}>
         <Text style={styles.centerText}>How many pins did you get?</Text>
-      </View>
+ 
       <View>
 				{choices()}
+			</View>
 			</View>
     </>
   );
@@ -70,7 +80,8 @@ const EditScore = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+		flex: 3,
+		justifyContent: 'center'
   },
 
 	rowContainer : {
@@ -79,29 +90,32 @@ const styles = StyleSheet.create({
 	},
 
 	pinAmount : {
-		height: 50, 
-		width: 50, 
+		height: 75, 
+		width: 75,
+		justifyContent: "center",
 		backgroundColor: '#eee', 
 		borderWidth: 0.5, 
 		borderColor: 'black'
 	},
 
 	strike : {
-		height: 50, 
+		height: 75, 
 		width: 75, 
 		backgroundColor: '#eee', 
 		borderWidth: 0.5, 
 		borderColor: 'black',
-		textAlign: 'center'
+		textAlign: 'center',
+		justifyContent: "center"
 	},
 
 	pinNumber : {
 		textAlign: 'center',
-		fontSize: 18
+		fontSize: 24
 	},
 
   centerText: {
-    textAlign: "center"
+		textAlign: "center",
+		fontSize: 28
   }
 });
 

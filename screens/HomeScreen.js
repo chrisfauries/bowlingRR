@@ -53,8 +53,7 @@ export default class HomeScreen extends Component {
     this.setState({
       players: number
     });
-  }
-  s;
+  };
 
   startGame() {
     this.props.navigation.navigate("Scores", { data: this.state, ts: Date.now() });

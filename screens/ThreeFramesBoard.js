@@ -6,7 +6,7 @@ const ThreeFramesBoard = props => {
 
   const miniFrameOne = function(frame) {
     if (player[frame][0] === 10) {
-      return "";
+      return "X";
     } else {
       return player[frame][0];
     }
@@ -14,14 +14,22 @@ const ThreeFramesBoard = props => {
 
   const miniFrameTwo = function(frame) {
     if (player[frame][0] === 10) {
-      return "";
+      if(frame === 9 && player[frame][1] === 10) {
+        return 'X';
+      } else {
+        return "-";
+      }
     } else {
-      return player[frame][1];
+        return player[frame][1];
     }
   };
 
   const miniFrameThree = function(frame) {
-
+    if (player[frame][2] === 10) {
+      return "X";
+    } else {
+      return player[frame][2];
+    }
   }
 
   const mainFrame = function(frame) {
@@ -51,6 +59,7 @@ const ThreeFramesBoard = props => {
         <View style={styles.miniFrameContainer}>
           <Text style={styles.miniFrameText}>{miniFrameOne(frame)}</Text>
         </View>
+        <Text style={styles.frameNumber}>{frame + 1}</Text>
         <Text style={styles.frameText}>{mainFrame(frame)}</Text>
       </View>
     );
@@ -88,7 +97,16 @@ const styles = StyleSheet.create({
 
   frameText: {
     fontSize: 48,
-    paddingTop: 20
+    top: 20,
+    right : 30,
+    position : 'absolute'
+  },
+  
+  frameNumber : {
+    position : 'absolute',
+    fontStyle : 'italic',
+    top: 1,
+    right : 4
   }
 });
 

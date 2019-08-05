@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
+import Scores from '../screens/Scores';
 import SettingsScreen from '../screens/SettingsScreen';
 
 const config = Platform.select({
@@ -34,21 +34,21 @@ HomeStack.navigationOptions = {
 
 HomeStack.path = '';
 
-const LinksStack = createStackNavigator(
+const ScoresStack = createStackNavigator(
   {
-    Scores: LinksScreen,
+    Scores: Scores,
   },
   config
 );
 
-LinksStack.navigationOptions = {
+ScoresStack.navigationOptions = {
   tabBarLabel: 'Scores',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-play' : 'md-play'} />
   ),
 };
 
-LinksStack.path = '';
+ScoresStack.path = '';
 
 const SettingsStack = createStackNavigator(
   {
@@ -68,7 +68,7 @@ SettingsStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
-  LinksStack,
+  ScoresStack,
   SettingsStack,
 });
 
